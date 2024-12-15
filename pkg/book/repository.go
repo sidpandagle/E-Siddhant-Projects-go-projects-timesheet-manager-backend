@@ -1,8 +1,8 @@
 package book
 
 import (
-	"cmc-web-scraper/api/presenter"
-	"cmc-web-scraper/pkg/entities"
+	"timesheet-manager-backend/api/presenter"
+	"timesheet-manager-backend/pkg/entities"
 	"context"
 	"time"
 

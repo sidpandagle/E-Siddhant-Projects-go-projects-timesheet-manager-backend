@@ -1,9 +1,9 @@
 package handlers
 
 import (
-	"cmc-web-scraper/api/presenter"
-	"cmc-web-scraper/pkg/book"
-	"cmc-web-scraper/pkg/entities"
+	"timesheet-manager-backend/api/presenter"
+	"timesheet-manager-backend/pkg/book"
+	"timesheet-manager-backend/pkg/entities"
 	"net/http"
 
 	"github.com/gofiber/fiber/v2"

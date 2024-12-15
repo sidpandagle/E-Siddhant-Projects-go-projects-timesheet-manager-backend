@@ -23,7 +23,7 @@ This project provides a starting point for building a web application with a cle
 1. Clone the repository:
     ```bash
     git clone https://github.com/gofiber/recipes.git
-    cd recipes/cmc-web-scraper
+    cd recipes/timesheet-manager-backend
     ```
 
 2. Set the environment variables in a `.env` file:
@@ -125,7 +125,7 @@ type Book struct {
 ```go
 package book
 
-import "cmc-web-scraper/pkg/entities"
+import "timesheet-manager-backend/pkg/entities"
 
 type Service interface {
     InsertBook(book *entities.Book) (*entities.Book, error)
@@ -140,9 +140,9 @@ type Service interface {
 package handlers
 
 import (
-    "cmc-web-scraper/pkg/book"
-    "cmc-web-scraper/pkg/entities"
-    "cmc-web-scraper/api/presenter"
+    "timesheet-manager-backend/pkg/book"
+    "timesheet-manager-backend/pkg/entities"
+    "timesheet-manager-backend/api/presenter"
     "github.com/gofiber/fiber/v2"
     "net/http"
     "errors"
@@ -175,8 +175,8 @@ func AddBook(service book.Service) fiber.Handler {
 package main
 
 import (
-    "cmc-web-scraper/api/routes"
-    "cmc-web-scraper/pkg/book"
+    "timesheet-manager-backend/api/routes"
+    "timesheet-manager-backend/pkg/book"
     "github.com/gofiber/fiber/v2"
 )
 
@@ -198,5 +198,5 @@ This example provides a basic setup for a Go Fiber application following Clean A
 
 - [Fiber Documentation](https://docs.gofiber.io)
 - [MongoDB Documentation](https://docs.mongodb.com/)
-- [Clean Architecture](https://8thlight.com/blog/uncle-bob/2012/08/13/the-cmc-web-scraper.html)
-# cmc-web-scraper
+- [Clean Architecture](https://8thlight.com/blog/uncle-bob/2012/08/13/the-timesheet-manager-backend.html)
+# timesheet-manager-backend

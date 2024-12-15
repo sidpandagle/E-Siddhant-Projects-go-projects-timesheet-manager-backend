@@ -1,4 +1,4 @@
-module cmc-web-scraper
+module timesheet-manager-backend
 
 go 1.21
 

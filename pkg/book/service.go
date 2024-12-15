@@ -1,8 +1,8 @@
 package book
 
 import (
-	"cmc-web-scraper/api/presenter"
-	"cmc-web-scraper/pkg/entities"
+	"timesheet-manager-backend/api/presenter"
+	"timesheet-manager-backend/pkg/entities"
 )
 
 // Service is an interface from which our api module can access our repository of all our models

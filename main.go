@@ -1,8 +1,8 @@
 package main
 
 import (
-	"cmc-web-scraper/api/routes"
-	"cmc-web-scraper/pkg/book"
+	"timesheet-manager-backend/api/routes"
+	"timesheet-manager-backend/pkg/book"
 	"context"
 	"fmt"
 	"log"
@@ -34,7 +34,7 @@ func main() {
 	app := fiber.New()
 	app.Use(cors.New())
 	app.Get("/", func(ctx *fiber.Ctx) error {
-		return ctx.Send([]byte("Welcome to the cmc-web-scraper mongo book shop!"))
+		return ctx.Send([]byte("Welcome to the timesheet-manager-backend mongo book shop!"))
 	})
 	api := app.Group("/api")
 	routes.BookRouter(api, bookService)

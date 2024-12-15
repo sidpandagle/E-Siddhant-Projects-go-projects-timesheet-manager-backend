@@ -1,8 +1,8 @@
 package routes
 
 import (
-	"cmc-web-scraper/api/handlers"
-	"cmc-web-scraper/pkg/book"
+	"timesheet-manager-backend/api/handlers"
+	"timesheet-manager-backend/pkg/book"
 
 	"github.com/gofiber/fiber/v2"
 )
