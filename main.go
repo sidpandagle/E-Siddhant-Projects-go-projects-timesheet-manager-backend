@@ -1,13 +1,14 @@
 package main
 
 import (
-	"timesheet-manager-backend/api/routes"
-	"timesheet-manager-backend/pkg/book"
 	"context"
 	"fmt"
 	"log"
 	"os"
 	"time"
+	"timesheet-manager-backend/api/routes"
+	"timesheet-manager-backend/pkg/book"
+	"timesheet-manager-backend/pkg/user"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
@@ -27,9 +28,16 @@ func main() {
 		log.Fatal("Database Connection Error $s", err)
 	}
 	fmt.Println("Database connection success!")
+
+	// API - Books
 	bookCollection := db.Collection("books")
 	bookRepo := book.NewRepo(bookCollection)
 	bookService := book.NewService(bookRepo)
+
+	// API - Users
+	userCollection := db.Collection("users")
+	userRepo := user.NewRepo(userCollection)
+	userService := user.NewService(userRepo)
 
 	app := fiber.New()
 	app.Use(cors.New())
@@ -38,6 +46,7 @@ func main() {
 	})
 	api := app.Group("/api")
 	routes.BookRouter(api, bookService)
+	routes.UserRouter(api, userService)
 	defer cancel()
 	log.Fatal(app.Listen(getPort()))
 }

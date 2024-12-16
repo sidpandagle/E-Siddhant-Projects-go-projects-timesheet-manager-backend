@@ -1,10 +1,10 @@
 package handlers
 
 import (
+	"net/http"
 	"timesheet-manager-backend/api/presenter"
 	"timesheet-manager-backend/pkg/book"
 	"timesheet-manager-backend/pkg/entities"
-	"net/http"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/pkg/errors"
@@ -84,9 +84,4 @@ func GetBooks(service book.Service) fiber.Handler {
 		}
 		return c.JSON(presenter.BooksSuccessResponse(fetched))
 	}
-}
-
-type Ticker struct {
-	Name   string `json:"name"`
-	Ticker string `json:"ticker"`
 }
