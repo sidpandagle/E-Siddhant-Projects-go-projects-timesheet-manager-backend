@@ -8,6 +8,7 @@ import (
 	"time"
 	"timesheet-manager-backend/api/routes"
 	"timesheet-manager-backend/pkg/book"
+	"timesheet-manager-backend/pkg/task"
 	"timesheet-manager-backend/pkg/user"
 
 	"github.com/gofiber/fiber/v2"
@@ -39,6 +40,11 @@ func main() {
 	userRepo := user.NewRepo(userCollection)
 	userService := user.NewService(userRepo)
 
+	// API - Tasks
+	taskCollection := db.Collection("tasks")
+	taskRepo := task.NewRepo(taskCollection)
+	taskService := task.NewService(taskRepo)
+
 	app := fiber.New()
 	app.Use(cors.New())
 	app.Get("/", func(ctx *fiber.Ctx) error {
@@ -47,6 +53,7 @@ func main() {
 	api := app.Group("/api")
 	routes.BookRouter(api, bookService)
 	routes.UserRouter(api, userService)
+	routes.TaskRouter(api, taskService)
 	defer cancel()
 	log.Fatal(app.Listen(getPort()))
 }

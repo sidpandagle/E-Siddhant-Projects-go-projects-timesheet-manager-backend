@@ -1,35 +1,41 @@
 package presenter
 
 import (
+	"time"
 	"timesheet-manager-backend/pkg/entities"
+
 	"github.com/gofiber/fiber/v2"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-// Book is the presenter object which will be passed in the response by Handler
-type Book struct {
-	ID     primitive.ObjectID `json:"id" bson:"_id,omitempty"`
-	Title  string             `json:"title"`
-	Author string             `json:"author"`
+// User is the presenter object which will be passed in the response by Handler
+type User struct {
+	ID        primitive.ObjectID `json:"id" bson:"_id,omitempty"`
+	Name      string             `json:"name" bson:"name"`
+	Email     string             `json:"email" bson:"email"`
+	CreatedAt time.Time          `json:"createdAt" bson:"createdAt"`
+	UpdatedAt time.Time          `json:"updatedAt" bson:"updatedAt"`
 }
 
-// BookSuccessResponse is the singular SuccessResponse that will be passed in the response by
+// UserSuccessResponse is the singular SuccessResponse that will be passed in the response by
 // Handler
-func BookSuccessResponse(data *entities.Book) *fiber.Map {
-	book := Book{
-		ID:     data.ID,
-		Title:  data.Title,
-		Author: data.Author,
+func UserSuccessResponse(data *entities.User) *fiber.Map {
+	user := User{
+		ID:        data.ID,
+		Name:      data.Name,
+		Email:     data.Email,
+		CreatedAt: data.CreatedAt,
+		UpdatedAt: data.UpdatedAt,
 	}
 	return &fiber.Map{
 		"status": true,
-		"data":   book,
+		"data":   user,
 		"error":  nil,
 	}
 }
 
-// BooksSuccessResponse is the list SuccessResponse that will be passed in the response by Handler
-func BooksSuccessResponse(data *[]Book) *fiber.Map {
+// UsersSuccessResponse is the list SuccessResponse that will be passed in the response by Handler
+func UsersSuccessResponse(data *[]User) *fiber.Map {
 	return &fiber.Map{
 		"status": true,
 		"data":   data,
@@ -37,8 +43,8 @@ func BooksSuccessResponse(data *[]Book) *fiber.Map {
 	}
 }
 
-// BookErrorResponse is the ErrorResponse that will be passed in the response by Handler
-func BookErrorResponse(err error) *fiber.Map {
+// UserErrorResponse is the ErrorResponse that will be passed in the response by Handler
+func UserErrorResponse(err error) *fiber.Map {
 	return &fiber.Map{
 		"status": false,
 		"data":   "",
