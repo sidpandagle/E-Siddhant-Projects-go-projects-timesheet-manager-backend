@@ -19,7 +19,7 @@ func AddUser(service user.Service) fiber.Handler {
 			c.Status(http.StatusBadRequest)
 			return c.JSON(presenter.UserErrorResponse(err))
 		}
-		if requestBody.Name == "" {
+		if requestBody.Email == "" {
 			c.Status(http.StatusInternalServerError)
 			return c.JSON(presenter.UserErrorResponse(errors.New(
 				"Please specify user details")))
