@@ -8,6 +8,8 @@ import (
 	"time"
 	"timesheet-manager-backend/api/routes"
 	"timesheet-manager-backend/pkg/book"
+	"timesheet-manager-backend/pkg/project"
+	"timesheet-manager-backend/pkg/tag"
 	"timesheet-manager-backend/pkg/task"
 	"timesheet-manager-backend/pkg/user"
 
@@ -45,6 +47,16 @@ func main() {
 	taskRepo := task.NewRepo(taskCollection)
 	taskService := task.NewService(taskRepo)
 
+	// API - Tags
+	tagCollection := db.Collection("tags")
+	tagRepo := tag.NewRepo(tagCollection)
+	tagService := tag.NewService(tagRepo)
+
+	// API - Projects
+	projectCollection := db.Collection("projects")
+	projectRepo := project.NewRepo(projectCollection)
+	projectService := project.NewService(projectRepo)
+
 	app := fiber.New()
 	app.Use(cors.New())
 	app.Get("/", func(ctx *fiber.Ctx) error {
@@ -54,6 +66,8 @@ func main() {
 	routes.BookRouter(api, bookService)
 	routes.UserRouter(api, userService)
 	routes.TaskRouter(api, taskService)
+	routes.TagRouter(api, tagService)
+	routes.ProjectRouter(api, projectService)
 	defer cancel()
 	log.Fatal(app.Listen(getPort()))
 }
