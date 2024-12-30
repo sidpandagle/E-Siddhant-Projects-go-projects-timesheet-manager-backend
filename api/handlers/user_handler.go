@@ -60,8 +60,8 @@ func RemoveUser(service user.Service) fiber.Handler {
 			c.Status(http.StatusBadRequest)
 			return c.JSON(presenter.UserErrorResponse(err))
 		}
-		userID := requestBody.ID
-		err = service.RemoveUser(userID)
+		userId := requestBody.ID
+		err = service.RemoveUser(userId)
 		if err != nil {
 			c.Status(http.StatusInternalServerError)
 			return c.JSON(presenter.UserErrorResponse(err))

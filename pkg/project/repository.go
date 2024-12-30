@@ -14,7 +14,7 @@ import (
 type Repository interface {
 	CreateProject(project *entities.Project) (*entities.Project, error)
 	ReadProject() (*[]presenter.Project, error)
-	ReadProjectByUserID(userID string) (*[]presenter.Project, error)
+	ReadProjectByUserID(userId string) (*[]presenter.Project, error)
 	UpdateProject(project *entities.Project) (*entities.Project, error)
 	DeleteProject(ID string) error
 }
@@ -56,9 +56,9 @@ func (r *repository) ReadProject() (*[]presenter.Project, error) {
 	return &projects, nil
 }
 
-func (r *repository) ReadProjectByUserID(userID string) (*[]presenter.Project, error) {
+func (r *repository) ReadProjectByUserID(userId string) (*[]presenter.Project, error) {
 	var projects []presenter.Project
-	objectID, err := primitive.ObjectIDFromHex(userID)
+	objectID, err := primitive.ObjectIDFromHex(userId)
 	cursor, err := r.Collection.Find(context.Background(), bson.M{"_userId": objectID})
 	if err != nil {
 		return nil, err

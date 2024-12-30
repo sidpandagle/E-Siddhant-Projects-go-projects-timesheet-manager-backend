@@ -68,11 +68,11 @@ func (r *repository) UpdateUser(user *entities.User) (*entities.User, error) {
 
 // DeleteUser is a mongo repository that helps to delete users
 func (r *repository) DeleteUser(ID string) error {
-	userID, err := primitive.ObjectIDFromHex(ID)
+	userId, err := primitive.ObjectIDFromHex(ID)
 	if err != nil {
 		return err
 	}
-	_, err = r.Collection.DeleteOne(context.Background(), bson.M{"_id": userID})
+	_, err = r.Collection.DeleteOne(context.Background(), bson.M{"_id": userId})
 	if err != nil {
 		return err
 	}
