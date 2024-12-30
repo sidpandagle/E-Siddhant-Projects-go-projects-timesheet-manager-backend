@@ -15,7 +15,7 @@ type Task struct {
 	Tags      []string           `json:"tags" bson:"tags"`
 	StartTime time.Time          `json:"startTime" bson:"startTime"`
 	EndTime   time.Time          `json:"endTime" bson:"endTime"`
-	UserID    primitive.ObjectID `json:"userID,omitempty" bson:"_userID,omitempty"`
+	UserID    primitive.ObjectID `json:"userID,omitempty" bson:"_userId,omitempty"`
 }
 
 func TaskSuccessResponse(data *entities.Task) *fiber.Map {

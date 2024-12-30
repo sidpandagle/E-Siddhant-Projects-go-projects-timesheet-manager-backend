@@ -59,7 +59,7 @@ func (r *repository) ReadProject() (*[]presenter.Project, error) {
 func (r *repository) ReadProjectByUserID(userID string) (*[]presenter.Project, error) {
 	var projects []presenter.Project
 	objectID, err := primitive.ObjectIDFromHex(userID)
-	cursor, err := r.Collection.Find(context.Background(), bson.M{"_userID": objectID})
+	cursor, err := r.Collection.Find(context.Background(), bson.M{"_userId": objectID})
 	if err != nil {
 		return nil, err
 	}
