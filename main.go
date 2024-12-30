@@ -87,7 +87,7 @@ func databaseConnection() (*mongo.Database, context.CancelFunc, error) {
 func getPort() string {
 	port := os.Getenv("PORT")
 	if port == "" {
-		port = ":8080"
+		port = ":3001"
 	} else {
 		port = ":" + port
 	}

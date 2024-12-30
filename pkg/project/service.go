@@ -9,6 +9,7 @@ import (
 type Service interface {
 	InsertProject(project *entities.Project) (*entities.Project, error)
 	FetchProjects() (*[]presenter.Project, error)
+	FetchProjectByUserID(userID string) (*[]presenter.Project, error)
 	UpdateProject(project *entities.Project) (*entities.Project, error)
 	RemoveProject(ID string) error
 }
@@ -30,6 +31,10 @@ func (s *service) InsertProject(project *entities.Project) (*entities.Project, e
 
 func (s *service) FetchProjects() (*[]presenter.Project, error) {
 	return s.repository.ReadProject()
+}
+
+func (s *service) FetchProjectByUserID(userID string) (*[]presenter.Project, error) {
+	return s.repository.ReadProjectByUserID(userID)
 }
 
 func (s *service) UpdateProject(project *entities.Project) (*entities.Project, error) {

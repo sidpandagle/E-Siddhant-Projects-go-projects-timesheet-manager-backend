@@ -81,3 +81,15 @@ func GetProjects(service project.Service) fiber.Handler {
 		return c.JSON(presenter.ProjectsSuccessResponse(fetched))
 	}
 }
+
+func GetProjectByUserID(service project.Service) fiber.Handler {
+	return func(c *fiber.Ctx) error {
+		userID := c.Params("userID")
+		fetched, err := service.FetchProjectByUserID(userID)
+		if err != nil {
+			c.Status(http.StatusInternalServerError)
+			return c.JSON(presenter.ProjectErrorResponse(err))
+		}
+		return c.JSON(presenter.ProjectsSuccessResponse(fetched))
+	}
+}
