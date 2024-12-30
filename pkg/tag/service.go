@@ -9,6 +9,7 @@ import (
 type Service interface {
 	InsertTag(tag *entities.Tag) (*entities.Tag, error)
 	FetchTags() (*[]presenter.Tag, error)
+	FetchTagByUserID(userId string) (*[]presenter.Tag, error)
 	UpdateTag(tag *entities.Tag) (*entities.Tag, error)
 	RemoveTag(ID string) error
 }
@@ -30,6 +31,10 @@ func (s *service) InsertTag(tag *entities.Tag) (*entities.Tag, error) {
 
 func (s *service) FetchTags() (*[]presenter.Tag, error) {
 	return s.repository.ReadTag()
+}
+
+func (s *service) FetchTagByUserID(userId string) (*[]presenter.Tag, error) {
+	return s.repository.ReadTagByUserID(userId)
 }
 
 func (s *service) UpdateTag(tag *entities.Tag) (*entities.Tag, error) {

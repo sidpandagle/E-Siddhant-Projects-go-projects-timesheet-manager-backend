@@ -9,6 +9,7 @@ import (
 
 func TagRouter(app fiber.Router, service tag.Service) {
 	app.Get("/tags", handlers.GetTags(service))
+	app.Get("/tags/:userId", handlers.GetTagByUserID(service))
 	app.Post("/tags", handlers.AddTag(service))
 	app.Put("/tags", handlers.UpdateTag(service))
 	app.Delete("/tags", handlers.RemoveTag(service))

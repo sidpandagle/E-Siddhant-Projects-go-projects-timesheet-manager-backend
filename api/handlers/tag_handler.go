@@ -81,3 +81,15 @@ func GetTags(service tag.Service) fiber.Handler {
 		return c.JSON(presenter.TagsSuccessResponse(fetched))
 	}
 }
+
+func GetTagByUserID(service tag.Service) fiber.Handler {
+	return func(c *fiber.Ctx) error {
+		userId := c.Params("userId")
+		fetched, err := service.FetchTagByUserID(userId)
+		if err != nil {
+			c.Status(http.StatusInternalServerError)
+			return c.JSON(presenter.TagErrorResponse(err))
+		}
+		return c.JSON(presenter.TagsSuccessResponse(fetched))
+	}
+}

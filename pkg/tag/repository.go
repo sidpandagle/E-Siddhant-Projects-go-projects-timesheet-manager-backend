@@ -14,6 +14,7 @@ import (
 type Repository interface {
 	CreateTag(tag *entities.Tag) (*entities.Tag, error)
 	ReadTag() (*[]presenter.Tag, error)
+	ReadTagByUserID(userId string) (*[]presenter.Tag, error)
 	UpdateTag(tag *entities.Tag) (*entities.Tag, error)
 	DeleteTag(ID string) error
 }
@@ -44,6 +45,21 @@ func (r *repository) CreateTag(tag *entities.Tag) (*entities.Tag, error) {
 func (r *repository) ReadTag() (*[]presenter.Tag, error) {
 	var tags []presenter.Tag
 	cursor, err := r.Collection.Find(context.Background(), bson.D{})
+	if err != nil {
+		return nil, err
+	}
+	for cursor.Next(context.TODO()) {
+		var tag presenter.Tag
+		_ = cursor.Decode(&tag)
+		tags = append(tags, tag)
+	}
+	return &tags, nil
+}
+
+func (r *repository) ReadTagByUserID(userId string) (*[]presenter.Tag, error) {
+	var tags []presenter.Tag
+	objectID, err := primitive.ObjectIDFromHex(userId)
+	cursor, err := r.Collection.Find(context.Background(), bson.M{"_userId": objectID})
 	if err != nil {
 		return nil, err
 	}
