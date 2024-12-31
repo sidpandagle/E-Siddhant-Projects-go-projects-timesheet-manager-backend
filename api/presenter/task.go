@@ -15,6 +15,7 @@ type Task struct {
 	Tags      []string           `json:"tags" bson:"tags"`
 	StartTime time.Time          `json:"startTime" bson:"startTime"`
 	EndTime   time.Time          `json:"endTime" bson:"endTime"`
+	Time      time.Duration      `json:"time" bson:"time"`
 	UserID    primitive.ObjectID `json:"userId,omitempty" bson:"_userId,omitempty"`
 }
 
@@ -26,6 +27,7 @@ func TaskSuccessResponse(data *entities.Task) *fiber.Map {
 		Tags:      data.Tags,
 		StartTime: data.StartTime,
 		EndTime:   data.EndTime,
+		Time:      data.EndTime.Sub(data.StartTime),
 		UserID:    data.UserID,
 	}
 	return &fiber.Map{
@@ -36,9 +38,26 @@ func TaskSuccessResponse(data *entities.Task) *fiber.Map {
 }
 
 func TasksSuccessResponse(data *[]Task) *fiber.Map {
+	var tasks []Task
+
+	// Iterate over the slice of tasks and calculate the Time field
+	for _, t := range *data {
+		task := Task{
+			ID:        t.ID,
+			Task:      t.Task,
+			Project:   t.Project,
+			Tags:      t.Tags,
+			StartTime: t.StartTime,
+			EndTime:   t.EndTime,
+			Time:      t.EndTime.Sub(t.StartTime),
+			UserID:    t.UserID,
+		}
+		tasks = append(tasks, task)
+	}
+
 	return &fiber.Map{
 		"status": true,
-		"data":   data,
+		"data":   tasks,
 		"error":  nil,
 	}
 }
