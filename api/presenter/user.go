@@ -10,14 +10,19 @@ import (
 
 // User is the presenter object which will be passed in the response by Handler
 type User struct {
-	ID           primitive.ObjectID `json:"id" bson:"_id,omitempty"`
-	Email        string             `json:"email" bson:"email"`
-	PasswordHash string             `json:"-" bson:"passwordHash"`    // Store hashed password, not plaintext
-	Role         string             `json:"role" bson:"role"`         // e.g., "admin", "user"
-	IsActive     bool               `json:"isActive" bson:"isActive"` // Whether the user is active or not
-	CreatedAt    time.Time          `json:"createdAt" bson:"createdAt"`
-	UpdatedAt    time.Time          `json:"updatedAt" bson:"updatedAt"`
-	Profile      Profile            `json:"profile,omitempty" bson:"profile,omitempty"` // Profile information (optional)
+	ID        primitive.ObjectID `json:"id" bson:"_id,omitempty"`
+	Email     string             `json:"email" bson:"email"`
+	Password  string             `json:"password" bson:"password"`
+	Role      string             `json:"role" bson:"role"`         // e.g., "admin", "user"
+	IsActive  bool               `json:"isActive" bson:"isActive"` // Whether the user is active or not
+	CreatedAt time.Time          `json:"createdAt" bson:"createdAt"`
+	UpdatedAt time.Time          `json:"updatedAt" bson:"updatedAt"`
+	Profile   Profile            `json:"profile,omitempty" bson:"profile,omitempty"` // Profile information (optional)
+}
+
+type LoginRequest struct {
+	Email    string `json:"email" bson:"email"`
+	Password string `json:"password" bson:"password"`
 }
 
 type Profile struct {
@@ -33,14 +38,14 @@ func UserSuccessResponse(data *entities.User) *fiber.Map {
 		LastName:  data.Profile.LastName,
 	}
 	user := User{
-		ID:           data.ID,
-		Email:        data.Email,
-		PasswordHash: data.PasswordHash,
-		Role:         data.Role,
-		IsActive:     data.IsActive,
-		CreatedAt:    data.CreatedAt,
-		UpdatedAt:    data.UpdatedAt,
-		Profile:      profile,
+		ID:        data.ID,
+		Email:     data.Email,
+		Password:  data.Password,
+		Role:      data.Role,
+		IsActive:  data.IsActive,
+		CreatedAt: data.CreatedAt,
+		UpdatedAt: data.UpdatedAt,
+		Profile:   profile,
 	}
 	return &fiber.Map{
 		"status": true,

@@ -65,7 +65,7 @@ func RemoveProject(service project.Service) fiber.Handler {
 		}
 		return c.JSON(&fiber.Map{
 			"status": true,
-			"data":   "Updated Successfully",
+			"data":   "Updated Successfully!",
 			"err":    nil,
 		})
 	}

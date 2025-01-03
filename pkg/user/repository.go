@@ -6,6 +6,8 @@ import (
 	"timesheet-manager-backend/api/presenter"
 	"timesheet-manager-backend/pkg/entities"
 
+	"errors"
+
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -17,6 +19,7 @@ type Repository interface {
 	ReadUser() (*[]presenter.User, error)
 	UpdateUser(user *entities.User) (*entities.User, error)
 	DeleteUser(ID string) error
+	LoginUser(username, password string) (*entities.User, error)
 }
 type repository struct {
 	Collection *mongo.Collection
@@ -77,4 +80,30 @@ func (r *repository) DeleteUser(ID string) error {
 		return err
 	}
 	return nil
+}
+
+// LoginUser authenticates a user with a username and password
+func (r *repository) LoginUser(email, password string) (*entities.User, error) {
+	var user entities.User
+
+	// Find the user by username
+	err := r.Collection.FindOne(context.Background(), bson.M{"email": email}).Decode(&user)
+	if err != nil {
+		return nil, errors.New("Invalid email or password!")
+	}
+
+	// Direct comparison of the plain-text password
+	if user.Password != password {
+		return nil, errors.New("Invalid email or password!")
+	}
+
+	// Map the user entity to presenter format
+	entitiesUser := &entities.User{
+		ID:        user.ID,
+		Email:     user.Email,
+		CreatedAt: user.CreatedAt,
+		UpdatedAt: user.UpdatedAt,
+	}
+
+	return entitiesUser, nil
 }

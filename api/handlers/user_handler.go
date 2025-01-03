@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"log"
 	"net/http"
 	"timesheet-manager-backend/api/presenter"
 	"timesheet-manager-backend/pkg/entities"
@@ -24,6 +25,8 @@ func AddUser(service user.Service) fiber.Handler {
 			return c.JSON(presenter.UserErrorResponse(errors.New(
 				"Please specify user details")))
 		}
+		log.Printf(requestBody.Email)
+		log.Printf(requestBody.Password)
 		result, err := service.InsertUser(&requestBody)
 		if err != nil {
 			c.Status(http.StatusInternalServerError)
@@ -68,9 +71,28 @@ func RemoveUser(service user.Service) fiber.Handler {
 		}
 		return c.JSON(&fiber.Map{
 			"status": true,
-			"data":   "updated successfully",
+			"data":   "Updated Successfully!",
 			"err":    nil,
 		})
+	}
+}
+
+// LoginUser is handler/controller which logins user
+func LoginUser(service user.Service) fiber.Handler {
+	return func(c *fiber.Ctx) error {
+		var requestBody presenter.LoginRequest
+		err := c.BodyParser(&requestBody)
+		if err != nil {
+			c.Status(http.StatusBadRequest)
+			return c.JSON(presenter.UserErrorResponse(err))
+		}
+		var result *entities.User
+		result, err = service.LoginUser(requestBody.Email, requestBody.Password)
+		if err != nil {
+			c.Status(http.StatusInternalServerError)
+			return c.JSON(presenter.UserErrorResponse(err))
+		}
+		return c.JSON(presenter.UserSuccessResponse(result))
 	}
 }
 

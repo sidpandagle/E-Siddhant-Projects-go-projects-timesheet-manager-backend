@@ -68,7 +68,7 @@ func RemoveBook(service book.Service) fiber.Handler {
 		}
 		return c.JSON(&fiber.Map{
 			"status": true,
-			"data":   "updated successfully",
+			"data":   "Updated Successfully!",
 			"err":    nil,
 		})
 	}

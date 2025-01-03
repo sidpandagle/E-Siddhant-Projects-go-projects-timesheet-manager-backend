@@ -13,4 +13,5 @@ func UserRouter(app fiber.Router, service user.Service) {
 	app.Post("/users", handlers.AddUser(service))
 	app.Put("/users", handlers.UpdateUser(service))
 	app.Delete("/users", handlers.RemoveUser(service))
+	app.Post("/login", handlers.LoginUser(service))
 }

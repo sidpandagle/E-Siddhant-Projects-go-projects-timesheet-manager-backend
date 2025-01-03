@@ -11,6 +11,7 @@ type Service interface {
 	FetchUsers() (*[]presenter.User, error)
 	UpdateUser(user *entities.User) (*entities.User, error)
 	RemoveUser(ID string) error
+	LoginUser(email string, password string) (*entities.User, error)
 }
 
 type service struct {
@@ -42,4 +43,9 @@ func (s *service) UpdateUser(user *entities.User) (*entities.User, error) {
 // RemoveUser is a service layer that helps remove users from Users
 func (s *service) RemoveUser(ID string) error {
 	return s.repository.DeleteUser(ID)
+}
+
+// LoginUser is a service layer that helps login user
+func (s *service) LoginUser(email string, password string) (*entities.User, error) {
+	return s.repository.LoginUser(email, password)
 }
