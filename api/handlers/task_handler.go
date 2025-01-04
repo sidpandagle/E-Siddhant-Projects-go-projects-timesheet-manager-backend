@@ -81,3 +81,15 @@ func GetTasks(service task.Service) fiber.Handler {
 		return c.JSON(presenter.TasksSuccessResponse(fetched))
 	}
 }
+
+func GetTasksByUserId(service task.Service) fiber.Handler {
+	return func(c *fiber.Ctx) error {
+		userId := c.Params("userId")
+		fetched, err := service.FetchTasksByUserId(userId)
+		if err != nil {
+			c.Status(http.StatusInternalServerError)
+			return c.JSON(presenter.TaskErrorResponse(err))
+		}
+		return c.JSON(presenter.TasksSuccessResponse(fetched))
+	}
+}

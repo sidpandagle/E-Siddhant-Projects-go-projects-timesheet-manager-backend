@@ -9,6 +9,7 @@ import (
 type Service interface {
 	InsertTask(task *entities.Task) (*entities.Task, error)
 	FetchTasks() (*[]presenter.Task, error)
+	FetchTasksByUserId(userId string) (*[]presenter.Task, error)
 	UpdateTask(task *entities.Task) (*entities.Task, error)
 	RemoveTask(ID string) error
 }
@@ -30,6 +31,10 @@ func (s *service) InsertTask(task *entities.Task) (*entities.Task, error) {
 
 func (s *service) FetchTasks() (*[]presenter.Task, error) {
 	return s.repository.ReadTask()
+}
+
+func (s *service) FetchTasksByUserId(userId string) (*[]presenter.Task, error) {
+	return s.repository.ReadTaskByUserId(userId)
 }
 
 func (s *service) UpdateTask(task *entities.Task) (*entities.Task, error) {

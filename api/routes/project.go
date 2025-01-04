@@ -9,7 +9,7 @@ import (
 
 func ProjectRouter(app fiber.Router, service project.Service) {
 	app.Get("/projects", handlers.GetProjects(service))
-	app.Get("/projects/:userId", handlers.GetProjectByUserID(service))
+	app.Get("/projects/:userId", handlers.GetProjectsByUserId(service))
 	app.Post("/projects", handlers.AddProject(service))
 	app.Put("/projects", handlers.UpdateProject(service))
 	app.Delete("/projects", handlers.RemoveProject(service))

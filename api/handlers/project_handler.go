@@ -82,7 +82,7 @@ func GetProjects(service project.Service) fiber.Handler {
 	}
 }
 
-func GetProjectByUserID(service project.Service) fiber.Handler {
+func GetProjectsByUserId(service project.Service) fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		userId := c.Params("userId")
 		fetched, err := service.FetchProjectByUserID(userId)

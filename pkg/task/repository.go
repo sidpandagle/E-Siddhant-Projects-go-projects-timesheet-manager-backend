@@ -14,6 +14,7 @@ import (
 type Repository interface {
 	CreateTask(task *entities.Task) (*entities.Task, error)
 	ReadTask() (*[]presenter.Task, error)
+	ReadTaskByUserId(userId string) (*[]presenter.Task, error)
 	UpdateTask(task *entities.Task) (*entities.Task, error)
 	DeleteTask(ID string) error
 }
@@ -44,6 +45,22 @@ func (r *repository) CreateTask(task *entities.Task) (*entities.Task, error) {
 func (r *repository) ReadTask() (*[]presenter.Task, error) {
 	var tasks []presenter.Task
 	cursor, err := r.Collection.Find(context.Background(), bson.D{})
+	if err != nil {
+		return nil, err
+	}
+	for cursor.Next(context.TODO()) {
+		var task presenter.Task
+		_ = cursor.Decode(&task)
+		tasks = append(tasks, task)
+	}
+	return &tasks, nil
+}
+
+// ReadTaskByUserId is a mongo repository that helps to fetch tasks by userId
+func (r *repository) ReadTaskByUserId(userId string) (*[]presenter.Task, error) {
+	var tasks []presenter.Task
+	objectID, err := primitive.ObjectIDFromHex(userId)
+	cursor, err := r.Collection.Find(context.Background(), bson.M{"_userId": objectID})
 	if err != nil {
 		return nil, err
 	}

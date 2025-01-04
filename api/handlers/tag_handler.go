@@ -82,7 +82,7 @@ func GetTags(service tag.Service) fiber.Handler {
 	}
 }
 
-func GetTagByUserID(service tag.Service) fiber.Handler {
+func GetTagsByUserId(service tag.Service) fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		userId := c.Params("userId")
 		fetched, err := service.FetchTagByUserID(userId)
