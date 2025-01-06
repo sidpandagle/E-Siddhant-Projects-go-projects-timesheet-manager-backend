@@ -8,13 +8,14 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 // Repository interface allows us to access the CRUD Operations in mongo here.
 type Repository interface {
 	CreateTask(task *entities.Task) (*entities.Task, error)
 	ReadTask() (*[]presenter.Task, error)
-	ReadTaskByUserId(userId string) (*[]presenter.Task, error)
+	ReadTaskByUserId(userId string, page int, pageSize int) (*[]presenter.Task, error)
 	UpdateTask(task *entities.Task) (*entities.Task, error)
 	DeleteTask(ID string) error
 }
@@ -57,18 +58,46 @@ func (r *repository) ReadTask() (*[]presenter.Task, error) {
 }
 
 // ReadTaskByUserId is a mongo repository that helps to fetch tasks by userId
-func (r *repository) ReadTaskByUserId(userId string) (*[]presenter.Task, error) {
+func (r *repository) ReadTaskByUserId(userId string, page int, pageSize int) (*[]presenter.Task, error) {
 	var tasks []presenter.Task
+
+	// Calculate the number of documents to skip
+	skip := (page - 1) * pageSize
+
+	// Convert userId to ObjectID
 	objectID, err := primitive.ObjectIDFromHex(userId)
-	cursor, err := r.Collection.Find(context.Background(), bson.M{"_userId": objectID})
 	if err != nil {
 		return nil, err
 	}
-	for cursor.Next(context.TODO()) {
+
+	// Set up filter to fetch documents for the specific userId
+	filter := bson.M{"_userId": objectID}
+
+	// Set pagination options
+	findOptions := options.Find()
+	findOptions.SetSkip(int64(skip))
+	findOptions.SetLimit(int64(pageSize))
+
+	// Execute the query with pagination
+	cursor, err := r.Collection.Find(context.Background(), filter, findOptions)
+	if err != nil {
+		return nil, err
+	}
+	defer cursor.Close(context.Background())
+
+	// Iterate through the cursor to decode documents
+	for cursor.Next(context.Background()) {
 		var task presenter.Task
-		_ = cursor.Decode(&task)
+		if err := cursor.Decode(&task); err != nil {
+			return nil, err
+		}
 		tasks = append(tasks, task)
 	}
+
+	if err := cursor.Err(); err != nil {
+		return nil, err
+	}
+
 	return &tasks, nil
 }
 

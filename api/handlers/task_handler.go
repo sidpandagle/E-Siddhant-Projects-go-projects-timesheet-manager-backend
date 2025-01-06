@@ -85,7 +85,23 @@ func GetTasks(service task.Service) fiber.Handler {
 func GetTasksByUserId(service task.Service) fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		userId := c.Params("userId")
-		fetched, err := service.FetchTasksByUserId(userId)
+
+		// Default values
+		defaultPage := 1
+		defaultPageSize := 10
+
+		// Get and parse page and pageSize with defaults
+		page := c.QueryInt("page")
+		if page == 0 {
+			page = defaultPage
+		}
+
+		pageSize := c.QueryInt("pageSize")
+		if pageSize == 0 {
+			pageSize = defaultPageSize
+		}
+
+		fetched, err := service.FetchTasksByUserId(userId, page, pageSize)
 		if err != nil {
 			c.Status(http.StatusInternalServerError)
 			return c.JSON(presenter.TaskErrorResponse(err))
